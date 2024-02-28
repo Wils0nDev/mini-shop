@@ -3,8 +3,10 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ProductImage } from './product-image.entity';
 
 @Entity()
 export class Product {
@@ -52,6 +54,15 @@ export class Product {
     default: []
   })
   tags:string[];
+
+  //Un producto puede tener varias imagenes : One to Many
+  //*eager : me permite cargar la relación de manera automatica
+  @OneToMany(
+    () => ProductImage, (img) => img.product,
+    {cascade: true, eager: true}
+    
+    )
+  images?: ProductImage[]
 
   //* BeforeInsert : Permite hacer validaciones antes de hacer un insert
   @BeforeInsert()

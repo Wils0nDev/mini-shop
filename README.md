@@ -11,7 +11,10 @@
 4. Cambiar las variables de entorno.
 5. Levantar la BD
 ```docker-compose up -d```
-6. Levatar aplicación ```yarn start:dev ``` 
+6. Ejecutar SEED
+   ``` http://localhost:3000/api/seed ``` 
+
+7. Levatar aplicación ```yarn start:dev ``` 
   * Si en caso sale error de conexión, "Crear bd".
 
 ## Librerias
@@ -48,3 +51,9 @@
 10. TypeOrmModule.forRoot : hacemos uso del modulo de TypeORM para generar la conexión a bd de PostgreSQL
 
 11. Docker: Docker nos sirve para crear contenedores con todo lo necesario que nuestra aplicación necesita para ser instalado en un servidor
+
+12. # Transacciones
+12. DataSource  : 
+13. QueryRunner : Proporciona una única conexión de base de datos
+14. Transacciones 
+
