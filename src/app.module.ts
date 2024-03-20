@@ -1,15 +1,17 @@
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
 import { CommonModule } from './common/common.module';
 import { SeedModule } from './seed/seed.module';
+import { FilesModule } from './files/files.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+  ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -20,12 +22,19 @@ import { SeedModule } from './seed/seed.module';
       autoLoadEntities: true, //* para cargar automaticamente las entidades
       synchronize: true  //*Esto sincroniza los cambios de la las entidades con la bd, en PRD por lo normal se usa en False
     }),
+    //* ServeStaticModule : Nos permite crear contenido estatico
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname,'..','public'),
+      }),
+
     ProductsModule,
     CommonModule,
-    SeedModule
+    SeedModule,
+    FilesModule,
+    AuthModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {
 

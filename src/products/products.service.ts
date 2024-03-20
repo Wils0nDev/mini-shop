@@ -7,6 +7,7 @@ import { Product } from './entities/product.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { isUUID } from 'class-validator';
 import { ProductImage } from './entities';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class ProductsService {
@@ -26,7 +27,7 @@ export class ProductsService {
     private readonly dataSource: DataSource
   ){}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, user: User) {
     try{
       //* "..." operador rest, nos permite encerrar los valores en un solo parametro
       const {images = [], ...productDetails} = createProductDto;
@@ -34,8 +35,8 @@ export class ProductsService {
       //* "..." operador spred :  ayuda a expandir los iterables en elementos individuales.
       const product = this.productoRepository.create({
         ...productDetails,
-        images: images.map(image => this.productoImgRepository.create({url:image})) //*creo instancias de imagenes dentro de este producto
-        
+        images: images.map(image => this.productoImgRepository.create({url:image})), //*creo instancias de imagenes dentro de este producto
+        user: user
       });
       
       await this.productoRepository.save(product)
@@ -47,6 +48,7 @@ export class ProductsService {
 
   async findAll(paginationDto: PaginationDto) {
     const {limit = 10, offset = 0} = paginationDto
+    console.log(limit)
     const products = await this.productoRepository.find({
       take: limit,
       skip : offset,
@@ -93,7 +95,7 @@ export class ProductsService {
 
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto,user: User) {
 
     const { images, ...toUpdate } = updateProductDto; 
 
@@ -102,6 +104,7 @@ export class ProductsService {
       const product = await this.productoRepository.preload({
         id: id,
         ...toUpdate,
+        
         
       });
       if(!product) throw new NotFoundException(`Product with id: ${id} not found`);
@@ -122,6 +125,7 @@ export class ProductsService {
        product.images = images.map( image => this.productoImgRepository.create({url: image}))
 
       }
+      product.user = user
       await queryRunner.manager.save(product) //*Aqui aun no esta impactando a la bd todavía
       await queryRunner.commitTransaction(); //*Si no ha dado ningun error, genera un commit  y ejecuta la transacción
       await queryRunner.release();
