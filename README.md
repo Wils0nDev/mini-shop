@@ -30,6 +30,7 @@
 - @nestjs/passport passport passport-jwt
 - @nestjs/jwt passport-jwt
 - @types/passport-jwt
+- @nestjs/swagger : para documentar la aplicación con swagger
 
 @nestjs/serve-static : Para servir contenido estático como una aplicación de página única (SPA).
 
@@ -40,30 +41,60 @@
 * Docker Desktop
 
 # Temas
+1. Modulos : Los módulos encapsulan todo el funciónamiento de un endpoint (controllers,servicios,interfaces,entity,dtos).
 
-1.  TypeOrm : Es un ORM que se puede ejecutar en las plataformas NodeJS, este ORM nos va a servir para poder trabajar con BD PostgreSQL y ejecutar consultas asi como crear las tablas de manera sincronizada desde los schemas que este nos brinda. 
+2. Controllers : Los controladores son responsables de manejar las solicitudes entrantes y devolver. las respuestas al cliente.
 
-2. Validaciones : Uso de class-validator y class-transformer, que nos brinda decoradores para poder realizar validaciones a cada propiedad de nuestro modelo.
+3. Decoradores Params (@Param, @Body).
 
-3. CRUD: (@GET, @POST, @PATCH, @DELETE) : decoradores del método de solicitud HTTP
+4. Decoradores para  HTTP estándar (@Get,@Post,@Patch,@Delete).
 
-4. Entity  : Entidad es una clase que se asigna a una tabla de base de datos (o colección cuando se usa MongoDB). Puede crear una entidad definiendo una nueva clase y marcándola con @Entity()
+5. Services : Aqui es donde haremos la parte de lógica de nuestro negocio.
 
-5. DTO (Data Transfer Object) : es un patrón de diseño de software utilizado para transferir datos entre subsistemas de una aplicación. Su objetivo es encapsular un conjunto de datos relacionados en una única estructura para facilitar su transporte de un lugar a otro, como entre diferentes capas de una aplicación o entre sistemas distribuidos.
+6. Inyección de Dependencias : En este caso usamos para compartir Servicios externos .
+
+7. Exportación e Importación de Módulos: Nos sirve para compartir información entre modulos. ejemplo (Un servicio,etc).
+
+8. Excepciones : NotFoundException, BadRequestException.
+
+9. Dto : Data Transfer Objecto, basicamente es una clase que o modelo que nos va a ayudar a transladar información de un lugar a otro en toda nuestra aplicación.
+
+10. class-valitor : Librería que me sirve para restringir mis modelos.
+
+11. class-transforme : Librería que me sirve para restringir mis modelos.
+
+12. Pipes : Transforman data de entrada y tambien nos sirve para validar ejemplo (ParseUUIDPipe ValidationPipe).
+
+13. useGlobalPipes: Es un pipe de alcance global que nos sirve sobre todo para validar que nuestros. request vengan tal cual nuestra modelos.
+14. ValidationPipe : nos permite aplicar reglas de validación a todas las entradas(request) del cliente
+    - whitelist: true, - Quitará al objeto cualquier propiedad que no utilice ningún decorador de validación.
+    - forbidNonWhitelisted: true, - Lanzara una excepción si no se respeta las propiedades que tiene el dto
 
 
-6. Paginación : Uso de QueryParams y PaginationDto, y los metodos limit y skyp.
 
-7. Patron Repository :  Este patrón se utiliza para separar las preocupaciones relacionadas con el acceso a los datos de las capas de negocio y presentación de una aplicación. Este patron ya viene agregado en TypeORM para poder hacer uso de el. 
+15.  TypeOrm : Es un ORM que se puede ejecutar en las plataformas NodeJS, este ORM nos va a servir para poder trabajar con BD PostgreSQL y ejecutar consultas asi como crear las tablas de manera sincronizada desde los schemas que este nos brinda. 
+
+16. Validaciones : Uso de class-validator y class-transformer, que nos brinda decoradores para poder realizar validaciones a cada propiedad de nuestro modelo.
+
+17. CRUD: (@GET, @POST, @PATCH, @DELETE) : decoradores del método de solicitud HTTP
+
+18. Entity  : Entidad es una clase que se asigna a una tabla de base de datos (o colección cuando se usa MongoDB). Puede crear una entidad definiendo una nueva clase y marcándola con @Entity()
+
+19. DTO (Data Transfer Object) : es un patrón de diseño de software utilizado para transferir datos entre subsistemas de una aplicación. Su objetivo es encapsular un conjunto de datos relacionados en una única estructura para facilitar su transporte de un lugar a otro, como entre diferentes capas de una aplicación o entre sistemas distribuidos.
+
+
+20. Paginación : Uso de QueryParams y PaginationDto, y los metodos limit y skyp.
+
+21. Patron Repository :  Este patrón se utiliza para separar las preocupaciones relacionadas con el acceso a los datos de las capas de negocio y presentación de una aplicación. Este patron ya viene agregado en TypeORM para poder hacer uso de el. 
     * createQueryBuilder : Nos permite crear consultas desde el lenguaje "T-SQL"
 
-8. Importación de Módulo :  importamos  TypeOrmModule para poder hacer uso de las entidades, al igual que importamos ProductModule para poder hacer uso de sus servicios. 
+22. Importación de Módulo  TypeOrmModule : para poder hacer uso de las entidades, al igual que importamos ProductModule para poder hacer uso de sus servicios. 
 
-8. Exportación de servicios :  exportamos los servicios de ProductModule para hacer uso de este dentro de otros modulos
+23. Exportación de servicios :  exportamos los servicios de ProductModule para hacer uso de este dentro de otros modulos
 
-9. ConfigModule : Es un módulo que importamos en el app.module, este nos permite obtener las variables de entorno configuradas en en nuestro env.config, que a su vez obtiene las variables configuradas en el .env. 
-
-10. TypeOrmModule.forRoot : hacemos uso del modulo de TypeORM para generar la conexión a bd de PostgreSQL
+24. ConfigModule : Es un módulo que importamos en el app.module, este nos permite obtener las variables de entorno configuradas en en nuestro env.config, que a su vez obtiene las variables configuradas en el .env. 
+ 
+25. TypeOrmModule.forRoot : hacemos uso del modulo de TypeORM para generar la conexión a bd de PostgreSQL
 
 ## Transacciones
    - Una transacción generalmente representa cualquier cambio en una base de datos, pero estas son confiables ya que si algo llega a fallar, el proceso se llega a revertir dejando la bd en el estado anterior.
@@ -76,6 +107,9 @@
 
 14. Upload File(img): Para manejar la carga de archivos, Nest proporciona un módulo integrado basado en el paquete de middleware multer para Express
 Más información sobre lo que usamos (UseInterceptors,FileInterceptor, etc) en -> [File upload con NestJS](https://docs.nestjs.com/techniques/file-upload#basic-example)
+
+
+14. Seed : Es un servicio que nos ayuda a generar data de prueba para compartirla en nuestros distintos modulos a travez de la inyección de dependencias. 
 
 15. Docker: Docker nos sirve para crear contenedores con todo lo necesario que nuestra aplicación necesita para ser instalado en un servidor
 

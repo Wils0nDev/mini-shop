@@ -24,12 +24,13 @@ export class ProductsController {
   create(
     @Body() createProductDto: CreateProductDto,
     @GetUser() user: User) {
+      console.log(createProductDto)
+
     return this.productsService.create(createProductDto, user);
   }
 
   @Get()
   findAll(@Query() paginationDto : PaginationDto) {
-    console.log(paginationDto)
     return this.productsService.findAll(paginationDto);
   }
 

@@ -4,12 +4,12 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule); //* wrapper de aplicacion que corre sobre express
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
+    whitelist: true, //*true:  quitará al objeto cualquier propiedad que no utilice ningún decorador de validación.
+    forbidNonWhitelisted: true, //* Lanzara una excepción si no se respeta las propiedades que tiene el dto
     })
    );
    //* DocumentBuilder : Estructura un documento base que se ajuste a la especificación OpenAPI
